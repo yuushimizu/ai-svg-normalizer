@@ -1,4 +1,4 @@
-# SVG Normalizer for Adobe Illustrator
+# SVG Normalizer for Adobe Illustrator 🍌
 
 This normalizes SVGs exported from Adobe Illustrator to embed into HTML. The following rules are applied:
 
@@ -6,3 +6,7 @@ This normalizes SVGs exported from Adobe Illustrator to embed into HTML. The fol
 - Remove id.
 - Remove class.
 - Remove `<defs>`.
+
+---
+
+🐝 \< We can use `iframe` to parse CSS!
