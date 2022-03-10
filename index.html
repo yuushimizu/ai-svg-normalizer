@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>SVG Normalizer for Adobe Illustrator</title>
+        <style>
+            textarea {
+                width: 100%;
+                height: 20rem;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Source:</p>
+        <textarea id="source"></textarea>
+        <p>Result:</p>
+        <textarea id="result"></textarea>
+        <p><button id="normalize-button">NORMALIZE</button></p>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('#normalize-button').addEventListener('click', () => {
+                    const source = document.querySelector('#source').value;
+                    const doc = (new DOMParser()).parseFromString(source, 'image/svg+xml');
+                    const iframe = document.createElement('iframe');
+                    document.body.appendChild(iframe);
+                    iframe.contentDocument.body.innerHTML = source;
+                    for (const stylesheet of iframe.contentDocument.styleSheets) {
+                        for (const rule of stylesheet.rules) {
+                            for (const node of doc.querySelectorAll(rule.selectorText)) {
+                                for (const [name, value] of rule.styleMap) {
+                                    node.setAttribute(name, String(value));
+                                }
+                            }
+                        }
+                    }
+                    for (const node of doc.querySelectorAll('defs')) {
+                        node.parentNode.removeChild(node);
+                    }
+                    for (const node of doc.querySelectorAll('*')) {
+                        node.removeAttribute('id');
+                        node.removeAttribute('class');
+                    }
+                    document.querySelector('#result').value = (new XMLSerializer).serializeToString(doc);
+                    document.body.removeChild(iframe);
+                });
+            });
+        </script>
+    </body>
+</html>
